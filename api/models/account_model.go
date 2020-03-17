@@ -3,7 +3,7 @@ package models
 import "fmt"
 
 type Account struct {
-	ID         uint `gorm:"primary_key"`
+	ID             uint `gorm:"primary_key"`
 	DocumentNumber string
 	//CreateAt     time.Time
 

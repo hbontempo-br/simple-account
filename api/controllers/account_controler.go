@@ -5,7 +5,7 @@ import (
 	"simple-account/api/models"
 )
 
-func CreateAccount(tx *gorm.DB, documentNumber string) (models.Account, error){
+func CreateAccount(tx *gorm.DB, documentNumber string) (models.Account, error) {
 	account := models.Account{
 		DocumentNumber: documentNumber,
 	}
@@ -14,24 +14,32 @@ func CreateAccount(tx *gorm.DB, documentNumber string) (models.Account, error){
 	return account, err
 }
 
-func GetAccountList(tx *gorm.DB) []models.Account {
+func GetAccountList(tx *gorm.DB, ids []int, documentNumbers []string) []models.Account {
+
+	var query *gorm.DB
+
+	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
+	query = query.Where("document_number <> ?", "00000000001")
+
 	var accounts []models.Account
-	tx.Find(&accounts)
+	query.Find(&accounts)
+
+	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
+	query.Find(&accounts)
+
+	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
+	query.Find(&accounts)
+
+	query = tx.Where("document_number <> ?", "00000000001")
+	query.Find(&accounts)
+
 	return accounts
 }
 
-func GetAccount(tx *gorm.DB, id int, documentNumber string) models.Account {
-	filters := make(map[string]interface{})
-	if id != 0 {
-		filters["id"] = id
-	}
-	if documentNumber != "" {
-		filters["document_number"] = documentNumber
-	}
+func GetAccount(tx *gorm.DB, id int) models.Account {
 
 	var account models.Account
-	tx.First(&account, filters)
+	tx.First(&account, id)
 
 	return account
 }
-

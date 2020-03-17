@@ -19,13 +19,15 @@ func main() {
 	router.Use(input_output_middleware.InputOutputMiddleware)
 	router.Use(db_middleware.DBMiddleware)
 
-
 	// Routes
 	router.HandleFunc("/account", resources.CreateAccount).Methods(http.MethodPost)
 	router.HandleFunc("/account", resources.GetAccountList).Methods(http.MethodGet)
 	router.HandleFunc("/account/{id}", resources.GetSingleAccount).Methods(http.MethodGet)
+	router.HandleFunc("/operation_type", resources.GetOperationTypeList).Methods(http.MethodGet)
+	router.HandleFunc("/operation_type/{id}", resources.GetSingleOperationType).Methods(http.MethodGet)
+	router.HandleFunc("/transaction", resources.CreateTransaction).Methods(http.MethodPost)
+	router.HandleFunc("/transaction/{id}", resources.GetSingleTransaction).Methods(http.MethodGet)
 
 	log.Print("Routes loaded")
 	log.Fatal(http.ListenAndServe(*configuration.GetServerPort(), router))
 }
-

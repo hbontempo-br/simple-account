@@ -3,21 +3,22 @@ package configuration
 import "log"
 
 type DBConfig struct {
-	Address string
-	Name   string
-	User string
+	Address  string
+	Name     string
+	User     string
 	Password string
 }
+
 var dbConfig DBConfig
 
 var serverPort string
 
-func init(){
+func init() {
 
 	dbConfig = DBConfig{
-		Address: getEnv("DB_ADDRESS", ""),
-		Name: getEnv("DB_NAME", ""),
-		User: getEnv("DB_USER", ""),
+		Address:  getEnv("DB_ADDRESS", ""),
+		Name:     getEnv("DB_NAME", ""),
+		User:     getEnv("DB_USER", ""),
 		Password: getEnv("DB_PASSWORD", ""),
 	}
 
@@ -26,7 +27,6 @@ func init(){
 	log.Print("Constants loaded")
 
 }
-
 
 func GetDBConfig() *DBConfig {
 	return &dbConfig

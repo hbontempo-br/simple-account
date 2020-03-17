@@ -8,8 +8,6 @@ import (
 	"strings"
 )
 
-
-
 func init() {
 
 	e := godotenv.Load() //Load .env file

@@ -2,10 +2,10 @@ package input_output_middleware
 
 import (
 	"fmt"
+	"github.com/golang/gddo/httputil/header"
 	"log"
 	"net/http"
 	"time"
-	"github.com/golang/gddo/httputil/header"
 )
 
 const transactionKey = "transaction"
@@ -29,8 +29,6 @@ func InputOutputMiddleware(h http.Handler) http.Handler {
 		h.ServeHTTP(w, r)
 		elapsed := time.Since(start)
 		log.Print(fmt.Sprintf("Outgoing response - %s %s %s", r.Method, r.URL, elapsed))
-
-
 
 	})
 }

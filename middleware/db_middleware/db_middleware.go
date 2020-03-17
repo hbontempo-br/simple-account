@@ -26,11 +26,11 @@ func DBMiddleware(h http.Handler) http.Handler {
 	})
 }
 
-func NewContext(ctx *context.Context, tx *gorm.DB){
+func NewContext(ctx *context.Context, tx *gorm.DB) {
 	*ctx = context.WithValue(*ctx, transactionKey, tx)
 }
 
-func RetrieveContext(ctx context.Context) *gorm.DB{
+func RetrieveContext(ctx context.Context) *gorm.DB {
 	txInterface := ctx.Value(transactionKey)
 	tx := txInterface.(*gorm.DB)
 	return tx

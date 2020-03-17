@@ -10,34 +10,49 @@ import (
 	"strconv"
 )
 
-
 type accountRequest struct {
-DocumentNumber string `json:"document_number"`
+	DocumentNumber string `json:"document_number"`
 }
 
-func CreateAccount(w http.ResponseWriter, r *http.Request){
-tx := db_middleware.RetrieveContext(r.Context())
+func CreateAccount(w http.ResponseWriter, r *http.Request) {
+	tx := db_middleware.RetrieveContext(r.Context())
 
-var acc accountRequest
+	var acc accountRequest
 
-err := json.NewDecoder(r.Body).Decode(&acc)
-if err != nil {
-http.Error(w, err.Error(), http.StatusBadRequest)
-return
-}
+	err := json.NewDecoder(r.Body).Decode(&acc)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-account, err := controllers.CreateAccount(tx, acc.DocumentNumber)
-if err != nil {
-_ = err
-}
-json.NewEncoder(w).Encode(account)
-tx.Commit()
+	account, err := controllers.CreateAccount(tx, acc.DocumentNumber)
+	if err != nil {
+		_ = err
+	}
+	json.NewEncoder(w).Encode(account)
+	tx.Commit()
 }
 
 func GetAccountList(w http.ResponseWriter, r *http.Request) {
 	tx := db_middleware.RetrieveContext(r.Context())
 
-	accountList := controllers.GetAccountList(tx)
+	parameters := r.URL.Query()
+	documentNumbers, ok := parameters["documentNumbers"]
+
+	var ids []int
+	idsString, ok := parameters["id"]
+	for _, idString := range idsString {
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			print(err)
+		}
+		ids = append(ids, id)
+	}
+	print(ok)
+	print(documentNumbers)
+	print(parameters)
+
+	accountList := controllers.GetAccountList(tx, ids, documentNumbers)
 
 	json.NewEncoder(w).Encode(&accountList)
 }
@@ -48,7 +63,7 @@ func GetSingleAccount(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	idString, found := vars["id"]
-	if !found{
+	if !found {
 		w.WriteHeader(http.StatusBadRequest)
 		str := `{"description":"Missing id (GET /account/{id})"}`
 		fmt.Fprint(w, str)
@@ -61,11 +76,9 @@ func GetSingleAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate errors
-	account := controllers.GetAccount(tx, id, "")
+	account := controllers.GetAccount(tx, id)
 
 	json.NewEncoder(w).Encode(&account)
-
-
 
 	//account := controllers.GetAccount(tx, vars["id"], )
 	print(vars)
