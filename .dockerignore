@@ -16,3 +16,8 @@
 
 # Local environment
 local.env
+
+# Not code stuff
+LICENSE
+README.md
+sql/

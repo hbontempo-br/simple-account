@@ -1,20 +1,10 @@
 package configuration
 
 import (
-	"fmt"
-	"github.com/joho/godotenv"
 	"os"
 	"strconv"
 	"strings"
 )
-
-func init() {
-
-	e := godotenv.Load() //Load .env file
-	if e != nil {
-		fmt.Print(e)
-	}
-}
 
 // Simple helper function to read an environment or return a default value
 func getEnv(key string, defaultVal string) string {
