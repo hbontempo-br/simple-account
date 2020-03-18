@@ -21,3 +21,4 @@ local.env
 LICENSE
 README.md
 sql/
+api/endpoint_documentation.yaml

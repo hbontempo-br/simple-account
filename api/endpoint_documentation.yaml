@@ -1,0 +1,387 @@
+###############################################################
+####                         TODO:                         ####
+#### - Add query parametes                                 ####
+#### - Make responses the same as documented               ####
+###############################################################
+
+
+openapi: 3.0.0
+info:
+  title: Simple Account API
+  description: Simple Account API (https://github.com/hbontempo-br/simple-account) endpoint`s documentation
+  version: 0.1.0
+  contact:
+    name: Henrique Bontempo
+    email: me@hbontempo.dev
+tags:
+  - name: OperationType
+    description: Endpoints regarding operation types
+  - name: Account
+    description: Endpoints regarding accounts
+  - name: Transaction
+    description: Endpoints regarding transactions
+
+
+#################
+####  PATHS  ####
+#################
+paths:
+
+
+  /operation_type:
+
+    ### GET LIST ###
+    get:
+      tags:
+        - OperationType
+      summary: Get a list of operation types
+      description: "This endpoint is used for retrieving a list of operation types"
+      responses:
+        "200":
+          $ref: '#/components/responses/OperationTypeList'
+
+
+  /operation_type/{operation_type_id}:
+
+    ### GET ONE ###
+    get:
+      tags:
+        - OperationType
+      summary: Get a single operation type
+      description: "This endpoint is used for retrieving a single operation type"
+      parameters:
+        - $ref: '#/components/parameters/path_operation_type_id'
+      responses:
+        "200":
+          $ref: '#/components/responses/OperationType'
+
+
+
+  /account:
+
+    ### GET LIST ###
+    get:
+      tags:
+        - Account
+      summary: Get a list of accounts
+      description: "This endpoint is used for retrieving a list of accounts"
+      responses:
+        "200":
+          $ref: '#/components/responses/AccountList'
+
+
+
+    post:
+      tags:
+        - Account
+      summary: Create a single account
+      description: "This endpoint is used to create a single of account"
+      requestBody:
+        $ref: '#/components/requestBodies/AccountBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/Account'
+
+  /account/{account_id}:
+
+    ### GET ONE ###
+    get:
+      tags:
+        - Account
+      summary: Get a single account
+      description: "This endpoint is used for retrieve a single account"
+      parameters:
+        - $ref: '#/components/parameters/path_account_id'
+      responses:
+        "200":
+          $ref: '#/components/responses/Account'
+
+
+
+  /transaction:
+
+    ### GET LIST ###
+    get:
+      tags:
+        - Transaction
+      summary: Get a list of transactions
+      description: "This endpoint is used for retrieving a list of transactions"
+      responses:
+        "200":
+          $ref: '#/components/responses/TransactionList'
+
+
+
+    post:
+      tags:
+        - Transaction
+      summary: Create a single transaction
+      description: "This endpoint is used to create a single of transaction"
+      requestBody:
+        $ref: '#/components/requestBodies/TransactionBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/Transaction'
+
+  /transaction/{transaction_id}:
+
+    ### GET ONE ###
+    get:
+      tags:
+        - Transaction
+      summary: Get a single transaction
+      description: "This endpoint is used for retrieve a single transaction"
+      parameters:
+        - $ref: '#/components/parameters/path_transaction_id'
+      responses:
+        "200":
+          $ref: '#/components/responses/Transaction'
+
+
+
+
+
+
+
+
+
+
+
+
+######################
+####  COMPONENTS  ####
+######################
+components:
+
+  ### PARAMETERS ###
+  parameters:
+
+
+    path_operation_type_id:
+      in: path
+      name: operation_type_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/operation_type_id'
+
+    path_account_id:
+      in: path
+      name: account_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/account_id'
+
+
+    path_transaction_id:
+      in: path
+      name: transaction_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/transaction_id'
+
+
+
+
+  ### REQUEST BODIES ###
+  requestBodies:
+
+
+    AccountBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountRequest'
+
+
+
+    TransactionBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionRequest'
+
+
+
+
+  ### RESPONSES ###
+  responses:
+
+
+
+
+    OperationTypeList:
+      description: "Operation Types response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OperationTypeListResponse'
+
+    OperationType:
+      description: "Operation Type response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OperationTypeResponse'
+
+    AccountList:
+      description: "Accounts response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountListResponse'
+
+    Account:
+      description: "Account response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountResponse'
+
+    TransactionList:
+      description: "Transactions response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionListResponse'
+
+    Transaction:
+      description: "Transaction response"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionResponse'
+
+
+
+
+
+
+
+  ### SCHEMAS ###
+  schemas:
+
+
+
+    AccountRequest:
+      type: object
+      properties:
+        document_number:
+          $ref: "#/components/schemas/document_number"
+      required:
+        - document_number
+      additionalProperties: false
+
+
+    TransactionRequest:
+      type: object
+      properties:
+        account_id:
+          $ref: "#/components/schemas/account_id"
+        operation_type_id:
+          $ref: "#/components/schemas/operation_type_id"
+        amount:
+          $ref: "#/components/schemas/amount"
+
+    OperationTypeListResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/OperationTypeResponse"
+
+    OperationTypeResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/operation_type_id"
+        enumerator:
+          $ref: "#/components/schemas/operation_type_enumerator"
+        description:
+          $ref: "#/components/schemas/operation_type_description"
+        behavior:
+          $ref: "#/components/schemas/operation_type_behaviour"
+
+    AccountListResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/AccountResponse"
+
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/account_id"
+        enumerator:
+          $ref: "#/components/schemas/document_number"
+
+
+    TransactionListResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/TransactionResponse"
+
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/transaction_id"
+        account_id:
+          $ref: "#/components/schemas/account_id"
+        operation_type_id:
+          $ref: "#/components/schemas/operation_type_id"
+        amount:
+          $ref: "#/components/schemas/amount"
+        event_date:
+          $ref: "#/components/schemas/event_date"
+
+
+    operation_type_id:
+      $ref: "#/components/schemas/id"
+
+    account_id:
+      $ref: "#/components/schemas/id"
+
+    transaction_id:
+      $ref: "#/components/schemas/id"
+
+    document_number:
+      type: string
+      minLength: 11
+      maxLength: 11
+      example: 1
+
+    amount:
+      type: number
+      multipleOf: 0.01
+
+    operation_type_enumerator:
+      type: string
+      enum:
+        - single_installment_purchase
+        - multi_installment_purchase
+        - withdraw
+        - payment
+      example: single_installment_purchase
+
+    operation_type_description:
+      type: string
+      description: Uma descrição do tipo da operação em português
+    operation_type_behaviour:
+      type: string
+      enum:
+        - negative
+        - positive
+      example: negative
+
+    event_date:
+      type: string
+      format: 'date-time'
+      example: "2020-03-17T11:02:28Z"
+
+    id:
+      type: integer
+      example: 1
+
+
+
+
