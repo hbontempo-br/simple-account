@@ -64,15 +64,24 @@ I'm still haven't figure it out yet. I will get there.
 
 ## TODO
 
-- Better error handling
+- Better error handling (all application)
 - Fix outgoing response on error
 - Helper functions the handle parameters
 - Add correct parameters to [OpenAPI file](api/endpoint_documentation.yaml) (and probably a error check)
 - DTO to "clean" outgoing response
 - Make the reference work in Gorm
 - Probably a whole reorganization of the code (for a more idiomatic approach)
-- Add a better logging package
-
+- Add a better logging packageMake created_at filed work on models
+- Create GetTransactionList method on transaction_controller.go
+- Probably controllers should Structs with the controllers package
+- Add real filters to GetAccountList on account_controller.go
+- Add method ToString to OperationModel
+- All resources have basically no validation whatsoever
+- Review DB middleware organization. (Probably move functions to methods or something like it)
+- Transaction resource could use something like go routines to make queries simultaneously and save time
+- For now the enumerator on the SQL query (OperationType) looks ok, but will have to change if more complex stuff appear (more columns?)
+- mysql_connector could use a restructure. Move loose functions to methods of a "class" (struct)
+- Put a path prefix on main.go regarding API's version for better version control of the API's client
 
 
 

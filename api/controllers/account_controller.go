@@ -18,19 +18,7 @@ func GetAccountList(tx *gorm.DB, ids []int, documentNumbers []string) []models.A
 
 	var query *gorm.DB
 
-	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
-	query = query.Where("document_number <> ?", "00000000001")
-
 	var accounts []models.Account
-	query.Find(&accounts)
-
-	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
-	query.Find(&accounts)
-
-	query = tx.Where("document_number IN (?)", []string{"12345678901", "00000000001"})
-	query.Find(&accounts)
-
-	query = tx.Where("document_number <> ?", "00000000001")
 	query.Find(&accounts)
 
 	return accounts

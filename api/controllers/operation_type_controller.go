@@ -11,11 +11,11 @@ func GetOperationTypeList(tx *gorm.DB, ids []int, enumerators []string) []models
 
 	query = tx.Where("1=1")
 	if len(ids) > 0 {
-		query = query.Where("id IN ?", ids)
+		query = query.Where("id IN (?)", ids)
 	}
 
 	if len(enumerators) > 0 {
-		query = query.Where("enumerators IN ?", enumerators)
+		query = query.Where("enumerator IN (?)", enumerators)
 	}
 
 	var operationType []models.OperationType
