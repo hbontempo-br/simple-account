@@ -2,6 +2,7 @@ package resources
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"simple-account/api/controllers"
 	"simple-account/middleware/db_middleware"
@@ -28,6 +29,15 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	if operationType.Behavior == "negative" {
 		trans.Amount = -trans.Amount
 	}
+
+	err = controllers.UpdateBalance(tx, trans.AccountId, trans.Amount)
+	if err != nil {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		str := `{"description":"Insufficient funds"}`
+		fmt.Fprint(w, str)
+		return
+	}
+
 
 	transaction, err := controllers.CreateTransaction(tx, trans.AccountId, trans.OperationTypeId, trans.Amount)
 	if err != nil {

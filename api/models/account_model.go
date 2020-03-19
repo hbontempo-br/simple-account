@@ -5,6 +5,7 @@ import "fmt"
 type Account struct {
 	ID             uint `gorm:"primary_key"`
 	DocumentNumber string
+	Balance		   float64 `gorm:"default=0"`
 	//CreateAt     time.Time
 
 }

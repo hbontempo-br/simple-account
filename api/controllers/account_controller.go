@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 	"simple-account/api/models"
 )
@@ -31,3 +32,26 @@ func GetAccount(tx *gorm.DB, id int) models.Account {
 
 	return account
 }
+
+func UpdateBalance(tx *gorm.DB, accountId int, transactionAmount float64) error{
+
+	account := GetAccount(tx, accountId)
+
+	remainingBalance := account.Balance + transactionAmount
+
+	if remainingBalance < 0 {
+		return errors.New("Insufficient funds")
+	}
+
+	account.Balance = remainingBalance
+
+	tx.Save(&account)
+
+	return nil
+}
+
+
+type Gormw interface {
+	First(out interface{}, where ...interface{}) Gormw
+}
+
